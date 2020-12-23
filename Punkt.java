@@ -10,10 +10,10 @@ public class Punkt {
        this.ycoord = ycoord;
    }
    public BigDecimal getXcoord(){
-       return this.xcoord;
+       return xcoord;
    }
    public BigDecimal getYcoord(){
-       return this.ycoord;
+       return ycoord;
    }
    /**
     * should allow the user to create a new point from two values of type double
@@ -25,21 +25,17 @@ public class Punkt {
 
     @Override
     public String toString(){
-       String xAxe = xcoord.toString();
-       String yAxe = ycoord.toString();
-       return "(" + xAxe + "," + yAxe + ")";
+       return "(" + xcoord + "," + ycoord + ")";
    }
    /**
     * This should calculate the Euclidean distance between the point
     * on which the method is called and the transferred point other.
     * */
    public BigDecimal abstand(Punkt other){
-       BigDecimal deltaX = this.ycoord.subtract(other.ycoord);
-       BigDecimal deltaY = this.xcoord.subtract(other.xcoord);
-       BigDecimal deltaXX = deltaX.multiply(deltaX).abs();
-       BigDecimal deltaYY = deltaY.multiply(deltaY).abs();
+       BigDecimal deltaX = this.getXcoord().subtract(other.getXcoord());
+       BigDecimal deltaY = this.getYcoord().subtract(other.getYcoord());
 
-       return BigDecimalUtility.sqrt(deltaXX.add(deltaYY));
+       return BigDecimalUtility.sqrt(deltaX.pow(2).add(deltaY.pow(2)));
    }
    /**
     * when the passed object obj of type point and has the same coordinates as the point
@@ -49,12 +45,19 @@ public class Punkt {
     * */
     @Override
     public boolean equals(Object obj){
-
-       if (obj instanceof Punkt){
-           return BigDecimalUtility.equalValues(this.xcoord, ((Punkt) obj).xcoord)
-                   && BigDecimalUtility.equalValues(this.ycoord, ((Punkt) obj).ycoord);
-       } else {
+        if (obj == this){
+            return true;
+        }
+       else if (!(obj instanceof Punkt)){
            return false;
+       }
+       Punkt point = (Punkt) obj;
+       if (!BigDecimalUtility.equalValues(point.getXcoord(), this.getXcoord())){
+           return false;
+       } else if(!BigDecimalUtility.equalValues(point.getYcoord(), this.getYcoord())){
+           return false;
+       } else{
+           return true;
        }
    }
 }
