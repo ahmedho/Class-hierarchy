@@ -1,6 +1,7 @@
 public class Strecke extends Strahl {
 
     Strecke(Punkt p1 , Punkt p2){
+
         super(p1,p2);
     }
     @Override
@@ -10,6 +11,14 @@ public class Strecke extends Strahl {
     @Override
     public boolean enthaelt(Punkt p0){
         return this.zwischenp1p2(p0);
+    }
+    @Override
+    public boolean startsFromp1(){
+        return true;
+    }
+    @Override
+    public boolean startsFormp2(){
+        return true;
     }
 
     public Strahl verlaengern(boolean swap){
