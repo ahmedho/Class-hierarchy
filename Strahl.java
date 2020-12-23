@@ -1,67 +1,67 @@
 public class Strahl extends Gerade{
-    protected final Punkt startPunkt;
+    protected final boolean startPunkt;
     public Strahl(Punkt a, Punkt b) {
         super(a, b);
-        startPunkt = a;
+        startPunkt = (this.getP1() == a);
     }
-    /**
-     * @return the start point
-     * */
-    public Punkt getStartPunkt(){
-        return this.startPunkt;
-    }
-    /**
-     * @return the second point
-     * */
-    public Punkt getOther(){
-        if (this.startPunkt.equals(getP1())){
-            return getP2();
-        }
-        else {
-            return getP1();
-        }
-    }
+
     /**
      * @return true, if and only if the ray begins at the first point.
      * */
     public boolean startsFromp1(){
-        return startPunkt.equals(getP1());
+
+        return startPunkt;
     }
     /**
      * @return true, if and only if the ray begins at the second point.
      * */
     public boolean startsFormp2(){
-        return startPunkt.equals(getP2());
+
+        return !startPunkt;
     }
     /**
      * @return String
      * */
     @Override
     public String toString(){
-        return "Strahl startet in " + getStartPunkt().toString() + " durch " +getOther().toString();
+        if (startsFromp1()){
+            return "Strahl von " +this.getP1() + " durch " + this.getP2();
+        }
+        else {
+            return "Strahl von " +this.getP2() + " durch " + this.getP1();
+        }
     }
     /**
      * @return the straight line, that arises when one moves the ray beyond the point
      * at which the ray begins into infinity extended.
      * */
     public Gerade verlaengern(){
-        return new Strahl(this.getP1(), this.getP2());
+
+        return new Gerade(this.getP1(), this.getP2());
     }
     @Override
     public boolean enthaelt(Punkt p0){
-        return this.enthaelt(p0);
+
+        if (zwischenp1p2(p0)){
+            return true;
+        }
+        if (startsFromp1() && hinterp2(p0)){
+            return true;
+        }
+        if (startsFormp2() && vorp1(p0)){
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean equals(Object obj){
-        if (this.getClass().equals(obj.getClass())){
-            if (this.enthaelt(((Strahl)obj).getP1()) && this.enthaelt(((Strahl)obj).getP2())){
-                return this.startPunkt.equals(((Strahl) obj).startPunkt);
-            } else {
-                return false;
-            }
-        } else {
+        if (!super.equals(obj)){
             return false;
+        }
+        else {
+            Strahl ray = (Strahl) obj;
+            return (this.startsFromp1() == ray.startsFromp1());
         }
     }
 }
